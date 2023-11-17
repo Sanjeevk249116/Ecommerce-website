@@ -1,12 +1,42 @@
-import React, { useContext, useState } from "react";
-import { Link, } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate, useParams, } from "react-router-dom";
 import swal from 'sweetalert';
+import { useDispatch, } from "react-redux";
+import axios from "axios"
 import { AuthContainVal } from "../AuthProvider/AuthContainer";
+import { PostItemsData } from "../redux/action";
 
 
 function ProductDetails() {
+const dispatch=useDispatch()
+const navigate=useNavigate()
+  const {id}=useParams();
+
+  const [cart,setCart]=useState([]);
+  const [arr,setArr]=useState([]);
+
+  const fetchData=async()=>{
+    const dataVal=await axios.get(`http://localhost:9090/productdetails/${id}`)
+setCart(dataVal.data.products)
+     
+}
+  const fetchData1=async()=>{
+    const dataVal=await axios.get(`http://localhost:9090/cartpage/items`)
+    setArr(dataVal.data.products)
+     
+}
+
+  useEffect(()=>{
+    fetchData();
+    fetchData1();
+  },[])
+
+console.log(arr)
+
+
+  
 const{lt,setLt}=useContext(AuthContainVal)
-  const cart=JSON.parse(localStorage.getItem("cart"))
+ 
   const [count, setCount] = useState(1);
 
   const addCount = () => {
@@ -18,20 +48,21 @@ const{lt,setLt}=useContext(AuthContainVal)
       setCount((prev) => prev - 1);
     }
   };
-     const arr=JSON.parse(localStorage.getItem("item"))||[];
+    //  const arr=JSON.parse(localStorage.getItem("item"))||[];
   setLt(arr.length)
   const handleData=()=>{
+   
        const dt=arr.filter((el)=>{
-          return el.id===cart.id
+          return el?._id==cart?._id
        })
 
        if(dt.length!==0){
         swal("item is already added in the cart");
        }else{
-        arr.push(cart);
-        localStorage.setItem("item",JSON.stringify(arr));
+        dispatch(PostItemsData(cart))
        }
-
+       fetchData1().then(()=>navigate("/cartpage")) 
+           
   }
 
   return (
@@ -157,11 +188,11 @@ const{lt,setLt}=useContext(AuthContainVal)
             <hr className=" bg-gray-200 w-full mt-4" />
           </div>
 
-         <Link to={"/cartpage"}>
+        
          <button className="focus:outline-none focus:ring-2 hover:bg-blue-900 focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-gray-800 w-2/5 py-5 lg:mt-12 mt-6 mr-10 rounded p-10" onClick={handleData}>
             Add to shopping bag
           </button>
-         </Link>
+         
           
           <Link to={'/checkout'}>
           <button className="focus:outline-none focus:ring-2 hover:bg-red-900 focus:ring-offset-2 focus:ring-gray-800 font-medium text-base leading-4 text-white bg-red-600 w-2/5 py-5 lg:mt-12 mt-6 rounded p-10">

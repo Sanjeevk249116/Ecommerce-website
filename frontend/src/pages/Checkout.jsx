@@ -1,28 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 function Checkout() {
+
+  const [details,setDetails]=useState({
+    name:"",
+    last:"",
+    email:"",
+    phone:0,
+    DOB:0,
+    address:"",
+    checkbox:true,
+})
+
+console.log(details)
+const chartData=(e)=>{
+
+  e.preventDefault()
+  console.log("data")
+
+}
+
+
   return (
     <div>
       <form action="">
         <div className="w-full bg-white p-10 lg:pl-96">
-          <h1 tabIndex={0} role="heading" aria-label="profile information" className="focus:outline-none text-3xl font-bold text-gray-800 mt-1">
+          <p tabIndex={0}  aria-label="profile information" className="focus:outline-none text-3xl font-bold text-gray-800 mt-1">
             Profile info
-          </h1>
+          </p>
           <p
             role="contentinfo"
             className=" focus:outline-nonetext-sm font-light leading-tight text-gray-600 mt-4"
           >
             Fill in the data for profile. It will take a couple of minutes.{" "}
-            <br />
-            You only need a passport
+            
           </p>
-          <h2
-            role="heading"
+          <p
+            
             aria-label="enter Personal data"
             className="text-xl font-semibold leading-7 text-gray-800 mt-10"
           >
             Personal data
-          </h2>
+          </p>
           <p className="text-sm font-light leading-none text-gray-600 mt-0.5">
             Your details and place of birth
           </p>
@@ -31,24 +50,27 @@ function Checkout() {
               <label className="mb-3 text-sm leading-none text-gray-800">
                 First name
               </label>
-              <input
+              <input  onChange={(e)=>setDetails({...details,[e.target.name]:e.target.value})}
                 type="name"
+                name="name"
                 tabIndex={0}
                 aria-label="Enter first name"
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
                 placeholder="Enter first name"
+                
               />
             </div>
             <div className="flex flex-col md:ml-12 md:mt-0 mt-8">
               <label className="mb-3 text-sm leading-none text-gray-800">
                 Last name
               </label>
-              <input
+              <input onChange={(e)=>setDetails({...details,[e.target.name]:e.target.value})}
                 type="name"
+                name="last"
                 tabIndex={0}
                 aria-label="Enter last name"
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
-                placeholder="Enter lst name"
+                placeholder="Enter last name"
               />
             </div>
           </div>
@@ -57,8 +79,9 @@ function Checkout() {
               <label className="mb-3 text-sm leading-none text-gray-800">
                 Email Address
               </label>
-              <input
+              <input onChange={(e)=>setDetails({...details,[e.target.name]:e.target.value})}
                 type="email"
+                name="email"
                 tabIndex={0}
                 aria-label="Enter email Address"
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
@@ -69,12 +92,13 @@ function Checkout() {
               <label className="mb-3 text-sm leading-none text-gray-800">
                 Phone number
               </label>
-              <input
+              <input onChange={(e)=>setDetails({...details,[e.target.name]:e.target.value})}
                 type="number"
+                name="phone" 
                 tabIndex={0}
                 aria-label="Enter phone number"
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
-                placeholder="+81 839274"
+                placeholder="+91-9876543210"
               />
             </div>
           </div>
@@ -83,8 +107,9 @@ function Checkout() {
               <label className="mb-3 text-sm leading-none text-gray-800">
                 Date of birth
               </label>
-              <input
+              <input onChange={(e)=>setDetails({...details,[e.target.name]:e.target.value})}
                 type="date"
+                name="DOB"
                 tabIndex={0}
                 aria-label="Enter date of birth"
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
@@ -95,8 +120,9 @@ function Checkout() {
               <label className="mb-3 text-sm leading-none text-gray-800">
                 Address
               </label>
-              <input
+              <input onChange={(e)=>setDetails({...details,[e.target.name]:e.target.value})}
                 type="name"
+                name="address"
                 tabIndex={0}
                 aria-label="Enter place of birth"
                 className="w-64 bg-gray-100 text-sm font-medium leading-none text-gray-800 p-3 border rounded border-gray-200"
@@ -107,8 +133,9 @@ function Checkout() {
           <div className="mt-6">
             <div className="py-1 flex items-center">
               <div className="bg-white dark:bg-gray-800 border rounded-sm border-gray-400 dark:border-gray-700 w-4 h-4 flex flex-shrink-0 justify-center items-center relative">
-                <input
+                <input onChange={(e)=>setDetails({...details,[e.target.name]:e.target.checked})}
                   type="checkbox"
+                  name="checkbox"
                   tabIndex={0}
                   aria-label="I agree with the terms of service"
                   defaultChecked
@@ -138,8 +165,8 @@ function Checkout() {
               </p>
             </div>
           </div>
-          <Link to={"/payment"}>
-            <button
+          
+            <button onClick={(e)=>chartData(e)}
               type="submit"
               aria-label="Next step"
               className="flex items-center justify-center py-2 px-7 focus:outline-none bg-white border rounded border-gray-400 mt-7 md:mt-7 hover:bg-gray-100  focus:ring-2 focus:ring-offset-2 focus:ring-gray-700"
@@ -158,7 +185,7 @@ function Checkout() {
                 <path d="M8.01 3H0V5H8.01V8L12 4L8.01 0V3Z" fill="#242731" />
               </svg>
             </button>
-          </Link>
+        
           <div className="mt-6 mx-16 text-red-950 text-1xl">
           <h1>Or</h1>
           </div>

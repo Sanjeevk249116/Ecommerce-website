@@ -1,34 +1,65 @@
-import React, {  useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function CartPages() {
-  
-  const listData=JSON.parse(localStorage.getItem("item"))||[]
-  const [val,setVal]=useState(1);
-  const[condi,setCondi]=useState(false)
-  const[name,setName]=useState("")
-  const[pr,setPr]=useState(null);
-  
-  let totalPrice=0;
-  for(let i=0;i<listData.length;i++){
-    totalPrice+=listData[i].price;
-}
- const dataValue=(el)=>{
+  const [listData, setListData] = useState([]);
+  const navigate = useNavigate();
+  const fetchData1 = async () => {
+    const dataVal = await axios.get(`http://localhost:9090/cartpage/items`);
+    setListData(dataVal.data.products);
+  };
 
-setPr(el.price*val)
-setName(el.title)
-setCondi(true);
- }
- 
-const handlevalue=()=>{
-if(condi){
-  localStorage.setItem("price",pr+65)
-}else{
-  localStorage.setItem("price",totalPrice+65)
-}
-}
- 
+  const deleteData=async(id)=>{
+    const apiUrl = 'http://localhost:9090/cartpage/items';
+
+    fetch(apiUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'id':id
+        
+      },
+    }).then(()=>fetchData1()).then(()=>{
+      setVal(1);
+      setCondi(false);
+      setName("");
+      setPr(null);
+    });
+
+  }
+
+  const [val, setVal] = useState(1);
+  const [condi, setCondi] = useState(false);
+  const [name, setName] = useState("");
+  const [pr, setPr] = useState(null);
+
+  let totalPrice = 0;
+  for (let i = 0; i < listData.length; i++) {
+    totalPrice += listData[i].price;
+  }
+  const dataValue = (el) => {
+    setPr(el.price * val);
+    setName(el.title);
+    setCondi(true);
+  };
+
+  const handlevalue = () => {
+    if (condi) {
+      localStorage.setItem("price", pr + 65);
+    } else {
+      localStorage.setItem("price", totalPrice + 65);
+    }
+  };
+
+  const removeData = (el) => {
+ deleteData(el._id)
+  };
+
+  useEffect(() => {
+    fetchData1();
+  }, []);
 
   return (
     <>
@@ -70,7 +101,10 @@ if(condi){
                   Bag
                 </p>
                 {listData?.map((el) => (
-                  <div className="md:flex items-center mt-14 py-8 border-t border-gray-200" onClick={(e)=>dataValue(el)}>
+                  <div
+                    className="md:flex items-center mt-14 py-8 border-t border-gray-200"
+                    onClick={(e) => dataValue(el)}
+                  >
                     <div className="w-1/2 h-56">
                       <img
                         src={el.thumbnail}
@@ -86,7 +120,10 @@ if(condi){
                         <p className="text-base font-black leading-none text-gray-800">
                           {el.title}
                         </p>
-                        <select className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none" onChange={(e)=>setVal(e.target.value)}>
+                        <select
+                          className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none"
+                          onChange={(e) => setVal(e.target.value)}
+                        >
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
@@ -95,7 +132,7 @@ if(condi){
                         </select>
                       </div>
                       <p className="text-xs leading-3 text-gray-600 pt-2">
-                       Rating: {el.rating}
+                        Rating: {el.rating}
                       </p>
                       <p className="text-xs leading-3 text-gray-600 py-4">
                         {el.category}
@@ -105,7 +142,10 @@ if(condi){
                       </p>
                       <div className="flex items-center justify-between pt-5 pr-6">
                         <div className="flex itemms-center">
-                          <p className="text-xs leading-3 underline text-red-500  cursor-pointer">
+                          <p
+                            className="text-xs leading-3 underline text-red-500  cursor-pointer"
+                            onClick={() => removeData(el)}
+                          >
                             Remove
                           </p>
                         </div>
@@ -124,14 +164,14 @@ if(condi){
                       Summary
                     </p>
                     <p className="text-2xl font-black pt-5 text-red-800">
-                      {setCondi?name:null}
+                      {setCondi ? name : null}
                     </p>
                     <div className="flex items-center justify-between pt-5">
                       <p className="text-base leading-none text-gray-800">
                         Subtotal
                       </p>
                       <p className="text-base leading-none text-gray-800">
-                       ${condi?pr:totalPrice}
+                        ${condi ? pr : totalPrice}
                       </p>
                     </div>
                     <div className="flex items-center justify-between pt-5">
@@ -157,11 +197,14 @@ if(condi){
                         Total
                       </p>
                       <p className="text-2xl font-bold leading-normal text-right text-gray-800">
-                        ${condi?pr+65:totalPrice+65}
+                        ${condi ? pr + 65 : totalPrice + 65}
                       </p>
                     </div>
                     <Link to={"/checkout"}>
-                      <button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white" onClick={handlevalue}>
+                      <button
+                        className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white"
+                        onClick={handlevalue}
+                      >
                         Checkout
                       </button>
                     </Link>

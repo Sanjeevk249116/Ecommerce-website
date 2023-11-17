@@ -90,13 +90,15 @@ function ProductsList() {
     }
   }
 
-  const cartData=(el)=>{
-    localStorage.setItem("cart",JSON.stringify(el))
+  // const cartData=(el)=>{
+  //   localStorage.setItem("cart",JSON.stringify(el))
+  //   console.log(el)
 
-  }
+  // }
   
   return (
     <div>
+    
       <div className="bg-white">
         <div>
           {/* Mobile filter dialog */}
@@ -148,6 +150,7 @@ function ProductsList() {
                       <h3 className="sr-only">Categories</h3>
 
                       {filters.map((section) => (
+                      
                         <Disclosure
                           as="div"
                           key={section.id}
@@ -360,7 +363,7 @@ function ProductsList() {
 
                       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
                         {products?.map((product) => (
-                          <Link to={"/productdetails"} onClick={(e)=>cartData(product)}>
+                          <Link to={`/productdetails/${product._id}`} >
                             <div key={product.id} className="group relative">
                               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                                 <img

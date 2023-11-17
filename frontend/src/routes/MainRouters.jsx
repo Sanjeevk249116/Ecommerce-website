@@ -21,7 +21,7 @@ function MainRouters() {
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/payment" element={<Payment/>} />
       <Route path="/stacklist" element={<StackList/>} />
-      <Route path="/productdetails" element={<ProductDetails/>} />
+      <Route path="/productdetails/:id" element={<ProductDetails/>} />
       <Route path="/success" element={<SuccessFull/>} />
       <Route path="/order" element={<Order/>} />
       <Route path="*" element={<NotFound/>}/>
