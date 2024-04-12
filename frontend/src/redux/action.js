@@ -1,7 +1,7 @@
 import { GET_DATA_ERROR, GET_DATA_SUCCESS, POST_ITEMS_SUCCESS } from "./actionType";
 import axios from "axios"
-// const url="https://dummyjson.com/products";
-const url="http://localhost:9090/"
+const url="https://dummyjson.com/products";
+// const url="http://localhost:9090/"
 const url1="http://localhost:9090/cartpage";
 
 
